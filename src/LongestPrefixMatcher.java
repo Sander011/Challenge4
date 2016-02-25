@@ -1,6 +1,12 @@
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Comparator;
+import java.util.Map;
+import java.util.TreeMap;
 
 class LongestPrefixMatcher {
 	// TODO: Request access token from your student assistant
@@ -8,6 +14,11 @@ class LongestPrefixMatcher {
 	
 	public static final String ROUTES_FILE  = "routes.txt";
 	public static final String LOOKUP_FILE  = "lookup.txt";
+
+    private final Map<String, Integer> lolaMap;
+
+    private boolean m = false;
+
 
 	/**
 	 * Main entry point
@@ -35,11 +46,18 @@ class LongestPrefixMatcher {
 	 *                     of the address range (notation ip/prefixLength)
 	 * @param portNumber The port number the IP block should route to
 	 */
-	// TODO: 25-2-2016  
+	// TODO: 25-2-2016
 	private void addRoute(int ip, byte prefixLength, int portNumber) {
-
 		// TODO: Store this route for later use in lookup() method
-	}
+        if (!m) {
+            String l = String.format("%32s", Integer.toBinaryString(ip)).replace(' ', '0');
+            String g = l.substring(0, prefixLength);
+            System.out.println(l);
+            System.out.println(prefixLength);
+            System.out.println(g);
+            m = true;
+        }
+    }
 
 	/**
 	 * Looks up an IP address in the routing tables
