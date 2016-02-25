@@ -1,4 +1,6 @@
 import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 
 class LongestPrefixMatcher {
 	// TODO: Request access token from your student assistant
@@ -11,6 +13,9 @@ class LongestPrefixMatcher {
 	 * Main entry point
 	 */
 	public static void main(String[] args) {
+		String meh = "BlaBlaBla";
+		String s = "Meh";
+		System.out.println(meh.substring(0, s.length()));
 		System.out.println(ACCESS_TOKEN);
 		new LongestPrefixMatcher();
 	}
@@ -31,7 +36,8 @@ class LongestPrefixMatcher {
 	 * @param portNumber The port number the IP block should route to
 	 */
 	// TODO: 25-2-2016  
-	private void addRoute(int ip, byte prefixLength, int portNumber) { 
+	private void addRoute(int ip, byte prefixLength, int portNumber) {
+
 		// TODO: Store this route for later use in lookup() method
 	}
 
@@ -42,6 +48,12 @@ class LongestPrefixMatcher {
 	 */
 	// TODO: 25-2-2016  
 	private int lookup(int ip) {
+		String sIP = String.format("%32s", Integer.toBinaryString(ip)).replace(" ", "0");
+		for(String s : lola) {
+			if(s.equals(sIP.substring(0, s.length()))) {
+				return lola.get(s);
+			}
+		}
 		// TODO: Look up this route
 		return -1;
 	}
