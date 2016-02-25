@@ -1,24 +1,34 @@
-import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Comparator;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 class LongestPrefixMatcher {
+    private class Pair {
+        private String s;
+        private int i;
+
+        public String getS() {
+            return s;
+        }
+
+        public int getI() {
+            return i;
+        }
+
+        Pair(String s, int i) {
+            this.s = s;
+            this.i = i;
+        }
+    }
+
     // TODO: Request access token from your student assistant
 	public static final String ACCESS_TOKEN = "s1234567_abcde";
 	
 	public static final String ROUTES_FILE  = "routes.txt";
 	public static final String LOOKUP_FILE  = "lookup.txt";
 
-    private final Map<String, Integer> lolaMap;
-
-    private boolean m = false;
-
+    private final ArrayList<Pair> lolaList;
 
 	/**
 	 * Main entry point
@@ -32,15 +42,20 @@ class LongestPrefixMatcher {
 	 * Constructs a new LongestPrefixMatcher and starts routing
 	 */
 	public LongestPrefixMatcher() {
-		this.lolaMap = new TreeMap<>(new Comparator<String>() {
-            @Override
-            public int compare(String o1, String o2) {
-                return Integer.compare(o1.length(), o2.length());
-            }
-        });
+		this.lolaList = new ArrayList<>();
         this.readRoutes();
+        this.sortLola();
 		this.readLookup();
 	}
+
+    private void sortLola() {
+        Collections.sort(lolaList, new Comparator<Pair>() {
+            @Override
+            public int compare(Pair o1, Pair o2) {
+                return Integer.compare(o1.getS().length(), o2.getS().length()) * -1;
+            }
+        });
+    }
 
 	/**
 	 * Adds a route to the routing tables
@@ -49,11 +64,9 @@ class LongestPrefixMatcher {
 	 *                     of the address range (notation ip/prefixLength)
 	 * @param portNumber The port number the IP block should route to
 	 */
-	// TODO: 25-2-2016
 	private void addRoute(int ip, byte prefixLength, int portNumber) { 
-		// TODO: Store this route for later use in lookup() method
         String f = String.format("%32s", Integer.toBinaryString(ip)).replace(' ', '0').substring(0, prefixLength);
-        lolaMap.put(f, portNumber);
+        lolaList.add(new Pair(f, portNumber));
     }
 
 	/**
@@ -63,12 +76,13 @@ class LongestPrefixMatcher {
 	 */
 	private int lookup(int ip) {
 		String sIP = String.format("%32s", Integer.toBinaryString(ip)).replace(" ", "0");
-		for(String s : lolaMap.keySet()) {
-			if(s.equals(sIP.substring(0, s.length()))) {
-				return lolaMap.get(s);
-			}
-		}
-		return -1;
+        for (Pair pair : lolaList) {
+            String s = pair.getS();
+            if (s.equals(sIP.substring(0, s.length()))) {
+                return pair.getI();
+            }
+        }
+        return -1;
 	}
 
 	/**
