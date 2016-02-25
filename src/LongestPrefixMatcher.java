@@ -23,7 +23,7 @@ class LongestPrefixMatcher {
     }
 
     // TODO: Request access token from your student assistant
-	public static final String ACCESS_TOKEN = "s1234567_abcde";
+	public static final String ACCESS_TOKEN = "s1743171_iu5my";
 	
 	public static final String ROUTES_FILE  = "routes.txt";
 	public static final String LOOKUP_FILE  = "lookup.txt";
