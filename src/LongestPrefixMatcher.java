@@ -1,3 +1,6 @@
+import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -29,7 +32,7 @@ class LongestPrefixMatcher {
 	 * Constructs a new LongestPrefixMatcher and starts routing
 	 */
 	public LongestPrefixMatcher() {
-        this.lolaMap = new TreeMap<>(new Comparator<String>() {
+		this.lolaMap = new TreeMap<>(new Comparator<String>() {
             @Override
             public int compare(String o1, String o2) {
                 return Integer.compare(o1.length(), o2.length());
@@ -58,16 +61,15 @@ class LongestPrefixMatcher {
 	 * @param ip The IP address to be looked up in integer representation
 	 * @return The port number this IP maps to
 	 */
-    private int lookup(int ip) {
-        String sIP = String.format("%32s", Integer.toBinaryString(ip)).replace(" ", "0");
-        System.out.println(sIP);
-        for(String s : lolaMap.keySet()) {
-            if(s.equals(sIP.substring(0, s.length()))) {
-                return lolaMap.get(s);
-            }
-        }
-        return -1;
-    }
+	private int lookup(int ip) {
+		String sIP = String.format("%32s", Integer.toBinaryString(ip)).replace(" ", "0");
+		for(String s : lolaMap.keySet()) {
+			if(s.equals(sIP.substring(0, s.length()))) {
+				return lolaMap.get(s);
+			}
+		}
+		return -1;
+	}
 
 	/**
 	 * Converts an integer representation IP to the human readable form
@@ -152,7 +154,7 @@ class LongestPrefixMatcher {
 			}
 		}
 	}
-    
+
 	private int parseIP(String ipString) {
 		String[] ipParts = ipString.split("\\.");
 		
