@@ -29,8 +29,11 @@ class LongestPrefixMatcher {
 	 * Constructs a new LongestPrefixMatcher and starts routing
 	 */
 	public LongestPrefixMatcher() {
-        this.lolaMap = new TreeMap<>((o1, o2) -> {
-            return Integer.compare(o1.length(), o2.length());
+        this.lolaMap = new TreeMap<>(new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                return Integer.compare(o1.length(), o2.length());
+            }
         });
         this.readRoutes();
 		this.readLookup();
@@ -46,14 +49,8 @@ class LongestPrefixMatcher {
 	// TODO: 25-2-2016
 	private void addRoute(int ip, byte prefixLength, int portNumber) { 
 		// TODO: Store this route for later use in lookup() method
-        if (!m) {
-            String l = String.format("%32s", Integer.toBinaryString(ip)).replace(' ', '0');
-            String g = l.substring(0, prefixLength);
-            System.out.println(l);
-            System.out.println(prefixLength);
-            System.out.println(g);
-            m = true;
-        }
+        String f = String.format("%32s", Integer.toBinaryString(ip)).replace(' ', '0').substring(0, prefixLength);
+        lolaMap.put(f, portNumber);
     }
 
 	/**
@@ -61,11 +58,16 @@ class LongestPrefixMatcher {
 	 * @param ip The IP address to be looked up in integer representation
 	 * @return The port number this IP maps to
 	 */
-	// TODO: 25-2-2016  
-	private int lookup(int ip) {
-		// TODO: Look up this route
-		return -1;
-	}
+    private int lookup(int ip) {
+        String sIP = String.format("%32s", Integer.toBinaryString(ip)).replace(" ", "0");
+        System.out.println(sIP);
+        for(String s : lolaMap.keySet()) {
+            if(s.equals(sIP.substring(0, s.length()))) {
+                return lolaMap.get(s);
+            }
+        }
+        return -1;
+    }
 
 	/**
 	 * Converts an integer representation IP to the human readable form
@@ -150,12 +152,7 @@ class LongestPrefixMatcher {
 			}
 		}
 	}
-
-	/**
-	 * Parses an IP
-	 * @param ip The IP address to convert
-	 * @return The integer representation for the IP
-	 */
+    
 	private int parseIP(String ipString) {
 		String[] ipParts = ipString.split("\\.");
 		
