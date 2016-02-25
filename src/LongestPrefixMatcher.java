@@ -24,9 +24,6 @@ class LongestPrefixMatcher {
 	 * Main entry point
 	 */
 	public static void main(String[] args) {
-		String meh = "BlaBlaBla";
-		String s = "Meh";
-		System.out.println(meh.substring(0, s.length()));
 		System.out.println(ACCESS_TOKEN);
 		new LongestPrefixMatcher();
 	}
@@ -35,6 +32,12 @@ class LongestPrefixMatcher {
 	 * Constructs a new LongestPrefixMatcher and starts routing
 	 */
 	public LongestPrefixMatcher() {
+		this.lolaMap = new TreeMap<>(new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                return Integer.compare(o1.length(), o2.length());
+            }
+        });
 		this.readRoutes();
 		this.readLookup();
 	}
@@ -64,15 +67,13 @@ class LongestPrefixMatcher {
 	 * @param ip The IP address to be looked up in integer representation
 	 * @return The port number this IP maps to
 	 */
-	// TODO: 25-2-2016  
 	private int lookup(int ip) {
 		String sIP = String.format("%32s", Integer.toBinaryString(ip)).replace(" ", "0");
-		for(String s : lola) {
+		for(String s : lolaMap.keySet()) {
 			if(s.equals(sIP.substring(0, s.length()))) {
-				return lola.get(s);
+				return lolaMap.get(s);
 			}
 		}
-		// TODO: Look up this route
 		return -1;
 	}
 
